@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const Tabs = (topics) => {
   // TASK 3
   // ---------------------
@@ -12,10 +14,28 @@ const Tabs = (topics) => {
   //   <div class="tab">bootstrap</div>
   //   <div class="tab">technology</div>
   // </div>
-  //
+  let wrapper = document.createElement('div')
+  wrapper.classList.add('topics')
+
+  topics.forEach(topicName => {
+    let newTab = document.createElement('div')
+    newTab.classList.add('tab')
+    newTab.textContent = (topicName)
+    wrapper.appendChild(newTab)
+  });
+
+  return wrapper;
 }
 
 const tabsAppender = (selector) => {
+  axios.get('https://lambda-times-api.herokuapp.com/topics')
+        .then((data) => {
+          let tabOb = Tabs(data.data.topics)
+          document.querySelector(selector).appendChild(tabOb)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
   // TASK 4
   // ---------------------
   // Implement this function which takes a css selector as its only argument.

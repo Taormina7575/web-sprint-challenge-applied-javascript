@@ -1,4 +1,31 @@
+import axios from "axios"
+
 const Card = (article) => {
+  let cardWrap = document.createElement('div')
+  let headDiv = document.createElement('div')
+  let authorDiv = document.createElement('div')
+  let picWrap = document.createElement('div')
+  let imgAuthor = document.createElement('img')
+  let authorSpan = document.createElement('span')
+
+  cardWrap.classList.add('card')
+  headDiv.classList.add('headline')
+  authorDiv.classList.add('author')
+  picWrap.classList.add('img-container')
+
+  cardWrap.appendChild(headDiv)
+  cardWrap.appendChild(authorDiv)
+  authorDiv.appendChild(picWrap)
+  picWrap.appendChild(imgAuthor)
+  authorDiv.appendChild(authorSpan)
+
+  headDiv.textContent = (article.headline)
+  imgAuthor.src = (article.authorPhoto)
+  authorSpan.textContent = (article.authorName)
+
+  cardWrap.addEventListener(('click'), e => {
+    console.log(article.headline)
+  })
   // TASK 5
   // ---------------------
   // Implement this function, which should return the markup you see below.
@@ -17,9 +44,40 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
+  return cardWrap
 }
 
 const cardAppender = (selector) => {
+  axios.get('https://lambda-times-api.herokuapp.com/articles')
+      .then((articleData) => {
+        articleData.data.articles.javascript.forEach(articleNew => {
+          let newCard = Card(articleNew);
+          document.querySelector(selector).appendChild(newCard)
+        });
+
+        articleData.data.articles.bootstrap.forEach(articleNew => {
+          let newCard = Card(articleNew);
+          document.querySelector(selector).appendChild(newCard)
+        });
+
+        articleData.data.articles.technology.forEach(articleNew => {
+          let newCard = Card(articleNew);
+          document.querySelector(selector).appendChild(newCard)
+        });
+
+        articleData.data.articles.jquery.forEach(articleNew => {
+          let newCard = Card(articleNew);
+          document.querySelector(selector).appendChild(newCard)
+        });
+
+        articleData.data.articles.node.forEach(articleNew => {
+          let newCard = Card(articleNew);
+          document.querySelector(selector).appendChild(newCard)
+        });
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   // TASK 6
   // ---------------------
   // Implement this function that takes a css selector as its only argument.
